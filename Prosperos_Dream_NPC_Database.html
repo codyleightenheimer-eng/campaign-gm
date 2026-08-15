@@ -265,12 +265,12 @@
   <div class="wrap" style="padding:0;">
     <p class="eyebrow">Station Security Archive — Access Level: Warden</p>
     <h1>Prospero's Dream</h1>
-    <p class="subhead">Personnel file — 47 identities on record</p>
+    <p class="subhead">Personnel file — 50 identities on record</p>
     <div class="statline">
       <div class="stat"><b>~8.7M</b><span>Population</span></div>
       <div class="stat"><b>X-Class</b><span>Port designation</span></div>
       <div class="stat"><b>9</b><span>Factions tracked</span></div>
-      <div class="stat"><b>47</b><span>Identities on file</span></div>
+      <div class="stat"><b>50</b><span>Identities on file</span></div>
     </div>
   </div>
 </header>
@@ -361,10 +361,15 @@ const NPCS = [
    detail:"Leader of the Hunglung insurgent resistance. Has \u201cgills\u201d from Dr. Bancali's experiments, which are slowly making her sick and paranoid without her knowledge. Seeking volunteers to infiltrate the Ice Box through Caliban's Heart to upload all Doptown citizens into new sleeves. Regularly uses suicide bombers.",
    connections:"The Hunglungs · Dr. Bancali/Caliban (source of her affliction) · Tempest Co. (enemy)"},
 
-  {name:"Loshe", fac:"independent", facLabel:"Unaffiliated — Dockmaster", stamp:"INFO BROKER", source:"A Pound of Flesh",
-   hook:"Personally oversees every ship that comes into dock \u2014 which makes him a hub of information about who's who on the Dream.",
-   detail:"Dockmaster at the Dry Dock. A reliable Warden tool for feeding the crew news and adventure seeds.",
-   connections:"The Dry Dock"},
+  {name:"Loshe", fac:"independent", facLabel:"Unaffiliated — Dockmaster, Dry Dock Vendor", stamp:"VENDOR", source:"A Pound of Flesh",
+   hook:"Personally oversees every ship that comes into dock — which makes him a hub of information about who's who on the Dream, and the man who quotes repair estimates.",
+   detail:"Dockmaster at the Dry Dock. A reliable Warden tool for feeding the crew news and adventure seeds. Also the actual point of contact for ship repairs, refueling, docking fees, and passage off the Dream — see Vendors page. Runs a tight operation: fast and hard, if not always cheap or reliable. Major repairs and upgrades run 2x standard rate, 50% down payment required, turnaround takes 1d5x the estimate, and there's a standing 10% chance some cargo goes missing during any job — nobody at the Dock will admit to knowing how.",
+   connections:"The Dry Dock · station conditions (strikes, unrest) directly affect his prices — fuel/repairs run 5x normal during a Teamsters strike"},
+
+  {name:"Birdie Okonkwo", fac:"independent", facLabel:"Unaffiliated — General Supply Vendor", stamp:"VENDOR", source:"Original NPC (PSG Equipment vendor build)",
+   hook:"Been running the Chandlery counter since before most captains on the Dream were born, and she'll tell you so whether you ask or not.",
+   detail:"An older, quirky, entirely reliable general-goods dealer in the Dry Dock District. Insists every piece of gear on her shelves has a personality — she'll tell you which drones are \\u2018moody\\u2019 and which oxygen tanks she trusts with her life. Never once shorted a customer in sixty-some years of trade — a deliberate contrast to almost every other vendor on the Dream. Sells rope, filters, scanners, comms, drones, stimpaks, and every other unglamorous tool that keeps a crew alive between the interesting parts, always at standard list price.",
+   connections:"The Chandlery · no known faction ties, genuinely neutral"},
 
   {name:"Indyl", fac:"independent", facLabel:"Unaffiliated — Procurer", stamp:"VENDOR", source:"A Pound of Flesh",
    hook:"Runs The Ecstasy's exclusive lower level, where companionship can be bought.",
@@ -470,6 +475,16 @@ const NPCS = [
    hook:"A beloved figure from before the current order \u2014 her funeral drew crowds who remembered a different Tempest.",
    detail:"A Tempest Company squad leader from the era before Yandee took power, well-liked for keeping comrades in line and tipping well locally. Died in a riot (or, per some conspiracy theorists, a monstrous uprising from the Choke) years before the present. Her public funeral is remembered as a snapshot of a time before Tempest officers became synonymous with brutal, arbitrary violence.",
    connections:"Tempest Co. (historical)"},
+
+  {name:"Vitaly Kozlenko \u2018Old Vitaly\u2019", fac:"tempest", facLabel:"Vendor \u2014 Ex-Tempest Co. Quartermaster", stamp:"VENDOR", source:"Original NPC (Armory Expanded v2 vendor build)",
+   hook:"Ran Tempest's armory for nineteen years. Talks to customers like recruits who haven't earned their kit yet.",
+   detail:"Discharged two years ago under circumstances he'll never volunteer and gets openly hostile if pressed. Officially 'inventory discrepancies.' He calls it politics. Both are true. Walked out with nothing but severance, his contacts, and a working knowledge of exactly which Tempest quartermasters still owe him favors \u2014 which is how his shelves stay stocked with gear that never technically left Tempest custody through proper channels. Sells legitimate military-grade hardware at a converted cargo container in the Old Drydock District, TEMPEST CO. stencil still faintly visible underneath. Quotes a price once; push back and he doubles it.",
+   connections:"Tempest Mercenary Company (ex-quartermaster) \u2014 almost certainly knows Cutter from his active-duty years, whether that's old loyalty, old resentment, or something Cutter would rather stayed buried is unconfirmed \u2014 possible source of Tempest supply-chain intelligence if trusted"},
+
+  {name:"Two-Ledger", fac:"independent", facLabel:"Vendor \u2014 Unaffiliated Fixer", stamp:"IDENTITY UNCLEAR", source:"Original NPC (Armory Expanded v2 vendor build)",
+   hook:"No fixed shop. No number she quotes twice. No deal that, by her own account, ever happened.",
+   detail:"Operates entirely through dead drops and coded meetups across Doptown and the Choke \u2014 a different location every time, arranged through a contact chain that always starts with someone the crew already knows. Deliberately forgettable appearance, changes every meeting (different hair, gait, sometimes apparent gender presentation) \u2014 whether this is one person with a wardrobe or several people running the same handle is unconfirmed. Three competing, internally consistent rumors circulate about her origin: ex-Bratva quietly skimming from Angus's own supply lines; ex-Stratemeyer logistics after a falling-out nobody survived to describe; or that 'Two-Ledger' isn't a person at all but a standing arrangement, a name anyone in the right chain can use \u2014 which would explain why the appearance never matches. Never confirm which is true. Sells the scrappy, improvised, and illegal end of the market \u2014 weapons, vice, poison, contraband electronics.",
+   connections:"Possible ties to Golyanovo II Bratva, Stratemeyer Syndicate, or neither \u2014 deliberately unresolved. Plausibly has standing relationships with every faction simultaneously, which is either a valuable neutral channel or a serious liability if two rivals ever compare notes."},
 
   {name:"DuBose", fac:"grim", facLabel:"Grim Merchants \u2014 Ephemera4Cheap", stamp:"VENDOR", source:"Grim Merchants",
    hook:"Sells anything and everything except cybermods \u2014 ask him why and watch his face change.",
