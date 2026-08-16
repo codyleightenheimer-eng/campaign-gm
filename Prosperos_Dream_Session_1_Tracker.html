@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 1 — Live Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0a0a0a; --panel:#131313; --panel-raised:#181818; --white:#f5f5f2;
+    --dim:#9a9a94; --faint:#5c5c58; --line:#282826; --pink:#ff2d78; --green:#4ade80;
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{background:var(--black);color:var(--white);font-family:'Archivo',sans-serif;line-height:1.5;}
+  .wrap{max-width:840px;margin:0 auto;padding:0 24px 90px;}
+  .home-link{
+    position:fixed; top:16px; left:16px;
+    background:var(--black); color:var(--pink);
+    border:1px solid var(--pink);
+    padding:8px 14px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px; font-weight:600;
+    text-decoration:none; text-transform:uppercase; letter-spacing:0.04em;
+    z-index:1000;
+    transition:background 0.15s,color 0.15s;
+  }
+  .home-link:hover{background:var(--pink);color:var(--black);}
+
+  header{padding:48px 24px 32px;border-bottom:6px solid var(--pink);text-align:center;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.2em;color:var(--pink);text-transform:uppercase;margin:0 0 14px;}
+  h1{font-family:'Archivo Black',sans-serif;font-weight:400;font-size:clamp(30px,6vw,50px);text-transform:uppercase;letter-spacing:-0.01em;margin:0;}
+  .tagline{font-size:14px;color:var(--dim);max-width:480px;margin:14px auto 0;}
+  .save-status{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint);margin-top:14px;letter-spacing:0.03em;}
+  .save-status.saved{color:var(--green);}
+
+  .controls{display:flex;justify-content:center;gap:10px;margin-top:20px;flex-wrap:wrap;}
+  button{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;padding:10px 18px;border:none;cursor:pointer;transition:opacity 0.15s;}
+  button:hover{opacity:0.85;}
+  .btn-primary{background:var(--pink);color:var(--black);}
+  .btn-secondary{background:var(--panel);color:var(--white);border:1px solid var(--line) !important;}
+
+  section{padding:36px 0;border-bottom:1px solid var(--line);}
+  section:last-of-type{border-bottom:none;}
+  .kicker{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--pink);margin:0 0 8px;}
+  h2{font-family:'Archivo Black',sans-serif;font-weight:400;font-size:22px;text-transform:uppercase;letter-spacing:-0.01em;margin:0 0 6px;}
+  .section-sub{font-size:13px;color:var(--dim);margin:0 0 16px;}
+
+  .storyline-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2px;background:var(--line);}
+  .storyline-btn{
+    background:var(--panel); color:var(--dim); border:none; padding:20px 16px;
+    font-family:'Archivo',sans-serif; font-weight:700; font-size:14px; text-align:left;
+    cursor:pointer; transition:background 0.15s,color 0.15s;
+  }
+  .storyline-btn:hover{background:var(--panel-raised);color:var(--white);}
+  .storyline-btn.active{background:var(--pink);color:var(--black);}
+  .storyline-btn span{display:block;font-family:'IBM Plex Mono',monospace;font-size:9.5px;font-weight:400;letter-spacing:0.04em;text-transform:uppercase;margin-top:6px;opacity:0.8;}
+
+  .why-dream-list{list-style:none;margin:0 0 14px;padding:0;}
+  .why-dream-row{display:flex;gap:8px;margin-bottom:8px;}
+  .why-dream-row input{flex:1;background:var(--panel);border:1px solid var(--line);color:var(--white);padding:10px 12px;font-family:'Archivo',sans-serif;font-size:14px;}
+  .why-dream-row input.name-field{flex:0 0 130px;}
+  .why-dream-row input::placeholder{color:var(--faint);}
+  .why-dream-row button{padding:0 14px;background:var(--panel);border:1px solid var(--line) !important;color:var(--faint);font-size:16px;}
+  .why-dream-row button:hover{color:var(--pink);border-color:var(--pink) !important;}
+
+  .thread-list{list-style:none;margin:0;padding:0;}
+  .thread-item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line);cursor:pointer;}
+  .thread-item:first-child{border-top:none;}
+  .thread-check{
+    flex-shrink:0; width:20px; height:20px; border:2px solid var(--pink);
+    margin-top:2px; display:flex; align-items:center; justify-content:center;
+    font-size:13px; color:var(--pink); font-weight:700;
+  }
+  .thread-item.checked .thread-check{background:var(--pink);color:var(--black);}
+  .thread-item.checked .thread-label{color:var(--dim);text-decoration:line-through;}
+  .thread-label{font-size:14.5px;color:var(--white);}
+  .thread-label b{display:block;color:var(--white);font-weight:700;margin-bottom:2px;}
+  .thread-item.checked .thread-label b{color:var(--dim);}
+
+  textarea{
+    width:100%; min-height:160px; background:var(--panel); border:1px solid var(--line);
+    color:var(--white); padding:14px 16px; font-family:'Archivo',sans-serif; font-size:14px;
+    line-height:1.6; resize:vertical;
+  }
+  textarea::placeholder{color:var(--faint);}
+
+  .outcome-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line);margin-bottom:14px;}
+  .outcome-btn{background:var(--panel);color:var(--dim);border:none;padding:16px;font-family:'Archivo',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:background 0.15s,color 0.15s;}
+  .outcome-btn:hover{background:var(--panel-raised);color:var(--white);}
+  .outcome-btn.active{background:var(--pink);color:var(--black);}
+
+  footer{text-align:center;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint);padding:36px 24px 0;}
+</style>
+</head>
+<body>
+<a href="index.html" class="home-link">&larr; Hub</a>
+
+<header>
+  <p class="eyebrow">Session 1 — Live Tool</p>
+  <h1>Table Tracker</h1>
+  <p class="tagline">Jot things down as they happen. Everything here autosaves to this browser as you type — no submit button needed.</p>
+  <p class="save-status" id="saveStatus">Not yet saved</p>
+  <div class="controls">
+    <button class="btn-secondary" id="exportBtn">Export Backup</button>
+    <button class="btn-secondary" id="importBtn">Import Backup</button>
+    <input type="file" id="importFile" accept="application/json" style="display:none;">
+    <button class="btn-secondary" id="clearBtn">Clear Tracker</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <p class="kicker">Which Way Did It Go</p>
+  <h2>Storyline Chosen</h2>
+  <p class="section-sub">Click one once the table's picked a direction — or once you've improvised the pivot.</p>
+  <div class="storyline-grid" id="storylineGrid">
+    <button class="storyline-btn" data-storyline="teamster">Option A<span>Teamster Strike</span></button>
+    <button class="storyline-btn" data-storyline="choke">Option B<span>Choke Unrest</span></button>
+    <button class="storyline-btn" data-storyline="acmd">Option C<span>ACMD Outbreak</span></button>
+    <button class="storyline-btn" data-storyline="undecided">Still Deciding<span>Improvising</span></button>
+  </div>
+</section>
+
+<section>
+  <p class="kicker">Build the Crew Callback</p>
+  <h2>"Why the Dream" Answers</h2>
+  <p class="section-sub">Log each character's one-line reason for arriving — this is what Session Zero told you to save. Feeds Angus's job offers and which storyline actually lands.</p>
+  <ul class="why-dream-list" id="whyDreamList"></ul>
+  <button class="btn-primary" id="addWhyDream">+ Add Character</button>
+</section>
+
+<section>
+  <p class="kicker">Don't Resolve, Just Seed</p>
+  <h2>Threads Landed Tonight</h2>
+  <p class="section-sub">Check these off live as each one actually surfaces at the table.</p>
+  <ul class="thread-list" id="threadList">
+    <li class="thread-item" data-thread="yandee">
+      <div class="thread-check">✓</div>
+      <div class="thread-label"><b>Yandee</b>A name spoken with real respect or real fear, in passing.</div>
+    </li>
+    <li class="thread-item" data-thread="choke">
+      <div class="thread-check">✓</div>
+      <div class="thread-label"><b>The Choke</b>A single unsettling detail, even if Option B wasn't chosen.</div>
+    </li>
+    <li class="thread-item" data-thread="caliban">
+      <div class="thread-check">✓</div>
+      <div class="thread-label"><b>Caliban</b>Graffiti or a nervous rumor — "Caliban is coming." Unexplained.</div>
+    </li>
+    <li class="thread-item" data-thread="tempest">
+      <div class="thread-check">✓</div>
+      <div class="thread-label"><b>Tempest Co.</b>A logo, a mercenary in a bar — something small.</div>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <p class="kicker">The Hook Forward</p>
+  <h2>How Tonight Ended</h2>
+  <p class="section-sub">Determines whether Angus's Harpy Tower pitch (whenever Session 2 gets built) lands as a reward or a debt call.</p>
+  <div class="outcome-grid" id="outcomeGrid">
+    <button class="outcome-btn" data-outcome="reward">Went well — reward framing</button>
+    <button class="outcome-btn" data-outcome="debt">Went sideways — debt-call framing</button>
+  </div>
+</section>
+
+<section>
+  <p class="kicker">Scratchpad</p>
+  <h2>Live Notes</h2>
+  <p class="section-sub">Anything else worth remembering — improvised NPC names, player decisions, loose threads you invented on the spot.</p>
+  <textarea id="notes" placeholder="Start typing..."></textarea>
+</section>
+
+</div>
+
+<footer>Prospero's Dream campaign — Session 1 Live Tracker. State saves locally to this browser. Export a backup before clearing your cache or switching devices.</footer>
+
+<script>
+const STATE_KEY = 'session1-tracker-v1';
+let state = {
+  storyline: null,
+  whyDream: [],
+  threads: {},
+  outcome: null,
+  notes: ''
+};
+
+function loadState(){
+  try{
+    const saved = localStorage.getItem(STATE_KEY);
+    if(saved) state = JSON.parse(saved);
+  }catch(e){}
+  render();
+}
+
+function saveState(){
+  try{
+    localStorage.setItem(STATE_KEY, JSON.stringify(state));
+    const status = document.getElementById('saveStatus');
+    status.textContent = 'Saved ' + new Date().toLocaleTimeString();
+    status.classList.add('saved');
+  }catch(e){}
+}
+
+function render(){
+  document.querySelectorAll('.storyline-btn').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.storyline === state.storyline);
+  });
+
+  document.querySelectorAll('.thread-item').forEach(item=>{
+    item.classList.toggle('checked', !!state.threads[item.dataset.thread]);
+  });
+
+  document.querySelectorAll('.outcome-btn').forEach(btn=>{
+    btn.classList.toggle('active', btn.dataset.outcome === state.outcome);
+  });
+
+  document.getElementById('notes').value = state.notes || '';
+
+  const list = document.getElementById('whyDreamList');
+  list.innerHTML = '';
+  if(state.whyDream.length === 0){
+    state.whyDream.push({name:'', answer:''});
+  }
+  state.whyDream.forEach((row, i)=>{
+    const li = document.createElement('li');
+    li.className = 'why-dream-row';
+    li.innerHTML = `
+      <input class="name-field" type="text" placeholder="Character" value="${(row.name||'').replace(/"/g,'&quot;')}" data-idx="${i}" data-field="name">
+      <input type="text" placeholder="Why the Dream, specifically..." value="${(row.answer||'').replace(/"/g,'&quot;')}" data-idx="${i}" data-field="answer">
+      <button data-idx="${i}" class="remove-row">✕</button>
+    `;
+    list.appendChild(li);
+  });
+
+  list.querySelectorAll('input').forEach(inp=>{
+    inp.addEventListener('input', (e)=>{
+      const idx = parseInt(e.target.dataset.idx);
+      const field = e.target.dataset.field;
+      state.whyDream[idx][field] = e.target.value;
+      saveState();
+    });
+  });
+  list.querySelectorAll('.remove-row').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      const idx = parseInt(e.target.dataset.idx);
+      state.whyDream.splice(idx, 1);
+      saveState();
+      render();
+    });
+  });
+}
+
+document.querySelectorAll('.storyline-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    state.storyline = (state.storyline === btn.dataset.storyline) ? null : btn.dataset.storyline;
+    saveState();
+    render();
+  });
+});
+
+document.querySelectorAll('.thread-item').forEach(item=>{
+  item.addEventListener('click', ()=>{
+    const key = item.dataset.thread;
+    state.threads[key] = !state.threads[key];
+    saveState();
+    render();
+  });
+});
+
+document.querySelectorAll('.outcome-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    state.outcome = (state.outcome === btn.dataset.outcome) ? null : btn.dataset.outcome;
+    saveState();
+    render();
+  });
+});
+
+document.getElementById('addWhyDream').addEventListener('click', ()=>{
+  state.whyDream.push({name:'', answer:''});
+  saveState();
+  render();
+});
+
+document.getElementById('notes').addEventListener('input', (e)=>{
+  state.notes = e.target.value;
+  saveState();
+});
+
+document.getElementById('exportBtn').addEventListener('click', ()=>{
+  const backup = { source:'prosperos-dream-session1-tracker', exportedAt: new Date().toISOString(), state };
+  const blob = new Blob([JSON.stringify(backup, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const stamp = new Date().toISOString().slice(0,10);
+  a.href = url;
+  a.download = `session1-tracker-backup-${stamp}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('importBtn').addEventListener('click', ()=>{
+  document.getElementById('importFile').click();
+});
+
+document.getElementById('importFile').addEventListener('change', (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev)=>{
+    try{
+      const data = JSON.parse(ev.target.result);
+      if(data.source !== 'prosperos-dream-session1-tracker'){
+        alert("This file doesn't look like a Session 1 Tracker backup.");
+        return;
+      }
+      state = data.state;
+      saveState();
+      render();
+      alert('Backup restored from ' + (data.exportedAt ? data.exportedAt.slice(0,10) : 'file') + '.');
+    }catch(err){
+      alert('Could not read that file. Make sure it\'s a Session 1 Tracker backup .json.');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
+document.getElementById('clearBtn').addEventListener('click', (e)=>{
+  const btn = e.target;
+  if(!btn.dataset.armed){
+    btn.dataset.armed = 'true';
+    const original = btn.textContent;
+    btn.textContent = 'Click Again to Confirm';
+    btn.style.background = 'var(--pink)'; btn.style.color = 'var(--black)'; btn.style.borderColor = 'var(--pink)';
+    clearTimeout(btn._armTimer);
+    btn._armTimer = setTimeout(()=>{
+      delete btn.dataset.armed; btn.textContent = original;
+      btn.style.background=''; btn.style.color=''; btn.style.borderColor='';
+    }, 3000);
+    return;
+  }
+  clearTimeout(btn._armTimer);
+  delete btn.dataset.armed;
+  btn.textContent = 'Clear Tracker';
+  btn.style.background=''; btn.style.color=''; btn.style.borderColor='';
+  state = { storyline:null, whyDream:[], threads:{}, outcome:null, notes:'' };
+  saveState();
+  render();
+});
+
+loadState();
+</script>
+
+</body>
+</html>
