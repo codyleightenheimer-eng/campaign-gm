@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Session 1 — NPC Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0a0a0a; --panel:#131313; --panel-raised:#181818; --white:#f5f5f2;
+    --dim:#9a9a94; --faint:#5c5c58; --line:#282826; --pink:#ff2d78; --green:#4ade80; --amber:#e6b34d;
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{background:var(--black);color:var(--white);font-family:'Archivo',sans-serif;line-height:1.5;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px 90px;}
+  .home-link{
+    position:fixed; top:16px; left:16px;
+    background:var(--black); color:var(--pink);
+    border:1px solid var(--pink);
+    padding:8px 14px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px; font-weight:600;
+    text-decoration:none; text-transform:uppercase; letter-spacing:0.04em;
+    z-index:1000;
+    transition:background 0.15s,color 0.15s;
+  }
+  .home-link:hover{background:var(--pink);color:var(--black);}
+
+  header{padding:48px 24px 32px;border-bottom:6px solid var(--pink);text-align:center;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.2em;color:var(--pink);text-transform:uppercase;margin:0 0 14px;}
+  h1{font-family:'Archivo Black',sans-serif;font-weight:400;font-size:clamp(30px,6vw,50px);text-transform:uppercase;letter-spacing:-0.01em;margin:0;}
+  .tagline{font-size:14px;color:var(--dim);max-width:520px;margin:14px auto 0;}
+
+  .filter-row{display:flex;justify-content:center;gap:8px;margin-top:22px;flex-wrap:wrap;}
+  .filter-btn{
+    font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;
+    padding:8px 14px;border:1px solid var(--line);background:var(--panel);color:var(--dim);cursor:pointer;
+    transition:background 0.15s,color 0.15s;
+  }
+  .filter-btn:hover{border-color:var(--dim);color:var(--white);}
+  .filter-btn.active{background:var(--pink);color:var(--black);border-color:var(--pink);}
+
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;background:var(--line);margin-top:28px;}
+  .npc-card{background:var(--panel);border-left:4px solid var(--pink);padding:20px 22px;display:flex;flex-direction:column;gap:10px;}
+  .npc-card.always{border-left-color:var(--green);}
+  .npc-card.optA{border-left-color:#7d9bb0;}
+  .npc-card.optB{border-left-color:#8a9560;}
+  .npc-card.optC{border-left-color:var(--amber);}
+
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .npc-name{font-family:'Archivo',sans-serif;font-weight:700;font-size:19px;color:var(--white);margin:0;}
+  .npc-tag{
+    font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;
+    padding:3px 8px;white-space:nowrap;flex-shrink:0;
+  }
+  .npc-tag.always{background:var(--green);color:var(--black);}
+  .npc-tag.optA{background:#7d9bb0;color:var(--black);}
+  .npc-tag.optB{background:#8a9560;color:var(--black);}
+  .npc-tag.optC{background:var(--amber);color:var(--black);}
+
+  .npc-role{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:0.03em;}
+  .npc-hook{font-size:14px;color:var(--white);font-style:italic;margin:0;border-left:2px solid var(--line);padding-left:12px;}
+
+  .npc-field{font-size:13px;color:var(--dim);margin:0;}
+  .npc-field b{color:var(--white);font-weight:700;display:block;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:3px;}
+
+  .stat-line{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--pink);
+    background:var(--black);padding:8px 10px;margin-top:2px;
+  }
+
+  footer{text-align:center;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint);padding:40px 24px 0;}
+</style>
+</head>
+<body>
+<a href="index.html" class="home-link">&larr; Hub</a>
+
+<header>
+  <p class="eyebrow">Session 1 — Quick Reference</p>
+  <h1>NPC Cards</h1>
+  <p class="tagline">Every incidental NPC from Session 1's own reference table, condensed to what you actually need at the table — voice, hook, and what they'd say if asked.</p>
+  <div class="filter-row">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="always">Always Relevant</button>
+    <button class="filter-btn" data-filter="optA">Option A — Teamster</button>
+    <button class="filter-btn" data-filter="optB">Option B — Choke</button>
+    <button class="filter-btn" data-filter="optC">Option C — ACMD</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="card-grid" id="cardGrid">
+
+  <div class="npc-card always" data-cat="always">
+    <div class="card-top"><p class="npc-name">Angus</p><span class="npc-tag always">Always</span></div>
+    <p class="npc-role">Fence &amp; Information Broker — canyonheavy.market</p>
+    <p class="npc-hook">"Heard you're new in-system. I can get you queue-jumped in ten minutes. Cost you a favor, not credits."</p>
+    <p class="npc-field"><b>Voice</b>Warm, chatty, transactional. Never fully answers a question about himself — deflects with charm, not evasion.</p>
+    <p class="npc-field"><b>What he'll actually say</b>Praises whichever storyline direction the crew leans toward. Routes his "ask" toward it without explaining why.</p>
+    <p class="npc-field"><b>Remember</b>He's quietly Bratva intelligence. Don't reveal it tonight — let one thing he does later recontextualize this session in hindsight.</p>
+  </div>
+
+  <div class="npc-card always" data-cat="always">
+    <div class="card-top"><p class="npc-name">Loshe</p><span class="npc-tag always">Always</span></div>
+    <p class="npc-role">Dockmaster — the Dry Dock</p>
+    <p class="npc-hook">Personally oversees every ship that comes into dock. Nothing happens on the Dream he doesn't hear about eventually.</p>
+    <p class="npc-field"><b>Voice</b>Brisk, professional, not unfriendly — just busy. Talks while doing three other things.</p>
+    <p class="npc-field"><b>What he'll actually say</b>Any rumor or piece of station news the table needs a nudge toward. He's your safety valve if the crew stalls.</p>
+    <p class="npc-field"><b>Remember</b>Free information, first time. If they come back for more, it should cost something — a favor, a job, a name.</p>
+  </div>
+
+  <div class="npc-card always" data-cat="always">
+    <div class="card-top"><p class="npc-name">Sem (Jury Semenov)</p><span class="npc-tag always">Always</span></div>
+    <p class="npc-role">Bartender — The Stellar Burn</p>
+    <p class="npc-hook">Buy a drink, get a rumor. That's the whole business model.</p>
+    <p class="npc-field"><b>Voice</b>Easy, low-key, unbothered. The kind of bartender who's heard everything twice.</p>
+    <p class="npc-field"><b>What he'll actually say</b>One genuine rumor per drink bought. Also manages retina-scan security for the club's private booths — knows who's meeting who upstairs, but won't say unless it's worth his while.</p>
+    <p class="npc-field"><b>Remember</b>A good spot to plant a Caliban graffiti mention or a Choke rumor if the table hasn't organically found one yet.</p>
+  </div>
+
+  <div class="npc-card always" data-cat="always">
+    <div class="card-top"><p class="npc-name">The Babushka</p><span class="npc-tag always">Always</span></div>
+    <p class="npc-role">Cybersurgeon — the Chop Shop</p>
+    <p class="npc-hook">Legendary, intensely private. Lets her AI child Zhenya do the talking so she doesn't have to.</p>
+    <div class="stat-line">C:25 · Sawed-Off Combat Shotgun 2d10+2 DMG · I:90 · W:2(45)</div>
+    <p class="npc-field"><b>Voice</b>Clinical, few words. Warmth is there if you look for it, but she won't perform it for strangers.</p>
+    <p class="npc-field"><b>What she'll actually say</b>Almost nothing directly — Zhenya (holographic AI, appears as a small child) handles scheduling and small talk instead.</p>
+    <p class="npc-field"><b>Remember</b>Appointments are gated on good standing with Yandee's people. If the crew's on the outs with the Bratva, she won't see them — full stop, no exceptions tonight.</p>
+  </div>
+
+  <div class="npc-card optA" data-cat="optA">
+    <div class="card-top"><p class="npc-name">Reidmar</p><span class="npc-tag optA">Option A</span></div>
+    <p class="npc-role">Union Rep, Teamsters Local — power broker</p>
+    <p class="npc-hook">Legendary pilot, permanently impatient. Just had his freighters captured by the Stratemeyer Syndicate.</p>
+    <p class="npc-field"><b>Voice</b>Gruff, blunt, no patience for small talk — but listens closely when something's actually useful.</p>
+    <p class="npc-field"><b>What he'll actually say</b>Wants his ships back. Will use a new crew for exactly that if they prove capable tonight.</p>
+    <p class="npc-field"><b>Remember</b>Distributes Yandee's Sycorax to fund the Union's lobbying — an uneasy, real business relationship with the Bratva. Don't over-explain this tonight; just know it's true.</p>
+  </div>
+
+  <div class="npc-card optA" data-cat="optA">
+    <div class="card-top"><p class="npc-name">Trieu</p><span class="npc-tag optA">Option A</span></div>
+    <p class="npc-role">Reidmar's daughter — Hangar Bay</p>
+    <p class="npc-hook">Usually elbow-deep in a ship's guts, fixing whatever her father's fleet broke this week.</p>
+    <p class="npc-field"><b>Voice</b>Practical, a little guarded. Softens if someone shows genuine respect for her work.</p>
+    <p class="npc-field"><b>What she'll actually say</b>Technical, grounded information about ships and the Hangar Bay. A minor recurring face, not a major source.</p>
+  </div>
+
+  <div class="npc-card optB" data-cat="optB">
+    <div class="card-top"><p class="npc-name">Imogene Kane</p><span class="npc-tag optB">Option B</span></div>
+    <p class="npc-role">Hunglung insurgency leader</p>
+    <p class="npc-hook">Planning to retake ground from Tempest Co.'s guards — unaware she's dying because of what Bancali did to her.</p>
+    <p class="npc-field"><b>Voice</b>Intense, focused, a leader who's used to being the smartest person in the room and usually is.</p>
+    <p class="npc-field"><b>What she'll actually say</b>Recruiting pitch for the crew — wants volunteers to infiltrate the Ice Box through Caliban's Heart.</p>
+    <p class="npc-field"><b>Remember</b>Her "gills" (Bancali's experiment) are slowly making her sick and paranoid, unknown to her. Play the paranoia as a subtle character note, not an obvious symptom, tonight.</p>
+  </div>
+
+  <div class="npc-card optB" data-cat="optB">
+    <div class="card-top"><p class="npc-name">Paz Asis</p><span class="npc-tag optB">Option B</span></div>
+    <p class="npc-role">Hunglung leader</p>
+    <p class="npc-hook">Watches for authorities before making contact. Gets captured the day after meeting the crew.</p>
+    <p class="npc-field"><b>Voice</b>Nervous, watchful, speaks in short bursts and keeps checking exits.</p>
+    <p class="npc-field"><b>What he'll actually say</b>Whatever the crew needs to know about the Choke situation — then vanishes.</p>
+    <p class="npc-field"><b>Remember</b>If not rescued after capture, he'll give up the crew's plans under interrogation. A real countdown if you use him.</p>
+  </div>
+
+  <div class="npc-card optC" data-cat="optC">
+    <div class="card-top"><p class="npc-name">Dr. Bancali / Caliban</p><span class="npc-tag optC">Option C</span></div>
+    <p class="npc-role">Unknown — do not name tonight</p>
+    <p class="npc-hook">Graffiti. A nervous rumor. That's all this session gets.</p>
+    <p class="npc-field"><b>Voice</b>N/A tonight — he doesn't appear as a character. He's a name half-scrawled on a wall.</p>
+    <p class="npc-field"><b>Remember</b>The full truth — a father, a dying daughter named Ariel, a merger with the station itself — is a gut-punch reveal worth saving for when the crew has context to actually feel it. Resist the urge to explain anything tonight.</p>
+  </div>
+
+</div>
+
+</div>
+
+<footer>Prospero's Dream campaign — Session 1 NPC Cards. Pairs with Session 1 and the Live Tracker.</footer>
+
+<script>
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.npc-card').forEach(card=>{
+      card.style.display = (filter === 'all' || card.dataset.cat === filter) ? 'flex' : 'none';
+    });
+  });
+});
+</script>
+
+</body>
+</html>
