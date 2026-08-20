@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Utpala Reach — Sector Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0a0a0a; --panel:#131313; --panel-raised:#181818; --white:#f5f5f2;
+    --dim:#9a9a94; --faint:#5c5c58; --line:#282826; --pink:#ff2d78; --amber:#e6b34d;
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{background:var(--black);color:var(--white);font-family:'Archivo',sans-serif;line-height:1.5;}
+  .wrap{max-width:1400px;margin:0 auto;padding:0 24px 90px;}
+  .home-link{
+    position:fixed; top:16px; left:16px;
+    background:var(--black); color:var(--pink);
+    border:1px solid var(--pink);
+    padding:8px 14px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px; font-weight:600;
+    text-decoration:none; text-transform:uppercase; letter-spacing:0.04em;
+    z-index:1000;
+    transition:background 0.15s,color 0.15s;
+  }
+  .home-link:hover{background:var(--pink);color:var(--black);}
+
+  header{padding:48px 24px 32px;border-bottom:6px solid var(--pink);text-align:center;}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.2em;color:var(--pink);text-transform:uppercase;margin:0 0 14px;}
+  h1{font-family:'Archivo Black',sans-serif;font-weight:400;font-size:clamp(28px,5vw,46px);text-transform:uppercase;letter-spacing:-0.01em;margin:0;}
+  .tagline{font-size:14px;color:var(--dim);max-width:640px;margin:14px auto 0;}
+
+  section{padding:36px 0;}
+  .kicker{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--pink);margin:0 0 8px;}
+  h2{font-family:'Archivo Black',sans-serif;font-weight:400;font-size:22px;text-transform:uppercase;letter-spacing:-0.01em;margin:0 0 6px;}
+  p.note{font-size:13px;color:var(--dim);max-width:820px;margin:0 0 20px;}
+
+  .map-frame{background:#000; border:1px solid var(--line); overflow-x:auto;}
+  .map-inner{position:relative; width:2500px;}
+  .map-inner img{display:block; width:2500px; height:2000px;}
+  .map-inner svg{position:absolute; top:0; left:0; width:2500px; height:2000px; pointer-events:none;}
+
+  .legend{display:flex;justify-content:center;gap:18px;margin-top:22px;flex-wrap:wrap;}
+  .legend-item{display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--dim);text-transform:uppercase;letter-spacing:0.03em;}
+  .legend-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+
+  .note-box{background:var(--panel);border:1px solid var(--line);padding:16px 18px;font-size:12.5px;color:var(--dim);margin-top:18px;}
+  .note-box b{color:var(--white);}
+  .warn-box{background:var(--panel);border:1px solid var(--amber);padding:16px 18px;font-size:12.5px;color:var(--dim);margin-top:18px;}
+  .warn-box .kicker{color:var(--amber);}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px;}
+  th{text-align:left;padding:8px 12px 8px 0;color:var(--pink);font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;border-bottom:1px solid var(--line);}
+  td{padding:8px 12px 8px 0;color:var(--dim);border-bottom:1px solid var(--line);}
+  td.hl{color:var(--white);}
+
+  footer{text-align:center;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint);padding:36px 24px 0;}
+</style>
+</head>
+<body>
+<a href="index.html" class="home-link">&larr; Hub</a>
+
+<header>
+  <p class="eyebrow">Warden Reference — Sector Geography</p>
+  <h1>Utpala Reach</h1>
+  <p class="tagline">Wages of Sin's own sector map, used directly as the source image — vectorized straight from the real scan, not hand-recreated. Page numbers have been removed for a cleaner in-fiction feel; the underlying geography is untouched. Only two things are added on top: Prospero's Dream and Jormungandr Station, placed as a clearly marked original overlay.</p>
+  <div class="legend">
+    <div class="legend-item"><span class="legend-dot" style="background:var(--white);"></span>The real map — vector trace of source</div>
+    <div class="legend-item"><span class="legend-dot" style="background:var(--pink);border:2px dashed var(--pink);"></span>Original placement — this campaign</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <p class="kicker">Warden Reference</p>
+  <h2>The Actual Map</h2>
+  <p class="note">Scroll to see the full sector — this is a direct vector trace of the real, full-resolution scan. Zoom in with your browser's native zoom (Ctrl/Cmd +) for crisp lines at any size.</p>
+
+  <div class="map-frame">
+    <div class="map-inner">
+      <img src="Utpala_Reach_Map_Traced.svg" alt="Wages of Sin sector map, vectorized, page numbers removed" style="filter:none;">
+      <svg viewBox="0 0 2500 2000">
+        <line x1="2334" y1="618" x2="2400" y2="800" stroke="#ff2d78" stroke-width="3" stroke-dasharray="8,5"/>
+        <circle cx="2400" cy="870" r="70" fill="rgba(19,19,19,0.92)" stroke="#ff2d78" stroke-width="3" stroke-dasharray="8,5"/>
+        <text x="2400" y="858" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="700" font-size="22" fill="#ff2d78">PROSPERO'S</text>
+        <text x="2400" y="884" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="700" font-size="22" fill="#ff2d78">DREAM [X]</text>
+        <text x="2400" y="908" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#f5f5f2">Original placement</text>
+
+        <line x1="2400" y1="940" x2="2400" y2="1040" stroke="#ff2d78" stroke-width="3" stroke-dasharray="8,5"/>
+        <circle cx="2400" cy="1090" r="45" fill="rgba(19,19,19,0.92)" stroke="#ff2d78" stroke-width="2.5" stroke-dasharray="8,5"/>
+        <text x="2400" y="1082" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="700" font-size="15" fill="#ff2d78">JORMUNGANDR</text>
+        <text x="2400" y="1100" text-anchor="middle" font-family="Archivo, sans-serif" font-weight="700" font-size="15" fill="#ff2d78">STATION</text>
+        <text x="2400" y="1118" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#f5f5f2">rings of Loki · original</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="note-box"><b>This map is a direct vector trace of the real source scan</b> — not hand-recreated. Every circle, connecting line, and text label was extracted mathematically from the actual image pixels (via <code>potrace</code>), so every position and connection is exactly what the source book shows, just recolored to fit the dark theme. <b>Page numbers were removed</b> via OCR-based detection (Tesseract) cross-checked with a manual visual sweep across every region of the map — confirmed zero remaining page-number text anywhere. Nothing about the actual geography was manually redrawn, estimated, or altered.</div>
+
+  <div class="warn-box">
+    <p class="kicker">Original Placement — Read Before Using</p>
+    <p style="margin-bottom:0;"><b>Prospero's Dream and Jormungandr Station (pink, dashed) are not on Wages of Sin's actual map.</b> The source never places Prospero's Dream anywhere — it's used across dozens of third-party products without a fixed sector location. This placement sits near <b>Utpala</b>, the map's only other X-Class port, on the reasoning that two black-market X-Class hubs plausibly exist within reach of each other out past the edge of charted space. Jormungandr Station is placed nearby since Teamster Trouble already ties it to Prospero's Dream directly. <b>Treat both placements as adjustable</b> — nothing about them is canon, and there's no wrong way to move them if a different arrangement serves the campaign better.</p>
+  </div>
+</section>
+
+<section>
+  <p class="kicker">Warden Reference</p>
+  <h2>Confirmed Cross-References</h2>
+  <p class="note">A number of map locations already appear as clients, targets, or backdrops in the Bounty Board's real Wages of Sin entries — worth knowing if you want a bounty's home system to actually mean something at the table.</p>
+  <table>
+    <tr><th>System</th><th>Confirmed tie</th></tr>
+    <tr><td class="hl">Utpala [X]</td><td>Home of Shoshana Berahthran, the Pirate Queen (Bounty #83) and the Utpalan Pirate Fraternity</td></tr>
+    <tr><td class="hl">Boria [C]</td><td>Odran Perrin (#14) and Nazar Balog (#16) both worked out of here</td></tr>
+    <tr><td class="hl">Citov [A]</td><td>Amaruq Borges (#20), Eamon McGuinness (#22), Josue Georgiu (#24) — Citov Orbital Shipyards</td></tr>
+    <tr><td class="hl">Baclite [C] / Offit [C]</td><td>Offit is the ODC prison moon — the full trial/sentencing module</td></tr>
+    <tr><td class="hl">Uyema [B]</td><td>Borisov Kyung-Hee's bounty (#84) — Uyema Militia client</td></tr>
+    <tr><td class="hl">Veldat [C]</td><td>Reidar Beech / The Light — the cosmic horror bounty (#86)</td></tr>
+    <tr><td class="hl">Doenides [A]</td><td>Roach the Cook (#34) — Doenides Police Department client</td></tr>
+    <tr><td class="hl">Balonov [C]</td><td>Bahdan Eros (#11) — Balonov Downport City</td></tr>
+  </table>
+</section>
+
+</div>
+
+<footer>Prospero's Dream campaign — Utpala Reach Sector Map. The real Wages of Sin map (MRPG-M6), vector-traced directly from source with page numbers removed. Prospero's Dream and Jormungandr Station added as original, adjustable placements.</footer>
+
+</body>
+</html>
